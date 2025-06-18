@@ -1,0 +1,60 @@
+# Install the package (run once)
+!pip install yfinance
+
+# Then import and proceed
+import yfinance as yf
+
+tesla = yf.Ticker("TSLA")
+tesla_data = tesla.history(period="max")
+tesla_data.reset_index(inplace=True)
+tesla_data.head()
+
+
+
+import pandas as pd
+
+# Load revenue data using correct file path
+tesla_revenue = pd.read_excel('/content/Book1.xlsx')
+
+# Standardize column names (if needed)
+tesla_revenue.columns = ['Date', 'Revenue']
+
+# Clean the data
+tesla_revenue = tesla_revenue[tesla_revenue['Revenue'] != '$-']
+tesla_revenue.dropna(inplace=True)
+
+# Display last 5 rows
+tesla_revenue
+
+
+gme = yf.Ticker("GME")
+gme_data = gme.history(period="max")
+gme_data.reset_index(inplace=True)
+gme_data.head()
+
+
+
+gme_revenue = pd.read_excel('/content/gameStop.xlsx')
+
+gme_revenue.columns = ['date', 'revenue']
+gme_revenue = gme_revenue[gme_revenue['revenue'] != '$-']
+gme_revenue
+
+
+
+import matplotlib.pyplot as plt
+
+def make_graph(stock_data, revenue_data, stock, title):
+    fig, ax1 = plt.subplots(figsize=(14, 6))
+    ax1.plot(stock_data['Date'], stock_data['Close'], 'b-')
+    ax1.set_xlabel("Date")
+    ax1.set_ylabel("Stock Price", color='b')
+    ax1.set_title(title)
+    plt.show()
+
+make_graph(tesla_data, tesla_revenue, 'TSLA', 'Tesla Stock Price Over Time')
+
+
+
+
+make_graph(gme_data, gme_revenue, 'GME', 'GameStop Stock Price Over Time')
